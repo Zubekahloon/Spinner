@@ -1,0 +1,110 @@
+{% extends 'main_admin/base.html' %} 
+{% load static %} 
+
+{% block css %}
+<style>
+  .stdform {
+    width: 60vw;
+    min-height: 60vh;
+    background-color: #9e9e9e2e;
+    margin-left: 90px;
+    margin-top: 0px;
+    margin-bottom: 70px;
+  }
+  h1 {
+    padding-top: 2vmax;
+    padding-bottom: 1vmax;
+  }
+
+  .form-control {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .form-label {
+    margin-left: 55px;
+  }
+
+  .form-check {
+    margin-left: 55px;
+  }
+
+  .btn {
+    margin-left: 55px;
+    margin-bottom: 2vmax;
+    padding-left: 2vmax;
+    padding-right: 2vmax;
+  }
+  form{
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  }
+</style>
+{% endblock css %} 
+
+{% block secondnavbar %}
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">
+          {% block page_title %} Spin Wheel: User Add Form{% endblock page_title %}
+        </h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="http://127.0.0.1:8000/adminpanel/">Home</a></li>
+          <li class="breadcrumb-item active">{{ page_title }}</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          {% if messages %} 
+          {% for message in messages %} 
+          {% if message.tags == 'success' %}
+          <div class="alert alert-success">{{message}}</div>
+          {% else %}
+          <div class="alert alert-danger">{{message}}</div>
+          {% endif %} 
+          {% endfor %} 
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock secondnavbar %} 
+
+{% block bodycontent %} 
+<div class="stdform">
+    <form method="POST" action="/do_updateuser/{{ myuser.id }}/" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1><label for="email" class="form-label">Update Users</label></h1>
+        <div class="mb-3">
+            <label for="name" class="form-label">User Name:</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter User Name" name="name"  value="{{myuser.name}}" required>
+        </div>
+        <div class="mb-3">
+            <label for="territory" class="form-label">Territory:</label>
+            <input type="text" class="form-control" id="territory" placeholder="e.g Bahawalpur 03031010101." name="territory" value="{{myuser.territory}}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+{% endblock bodycontent %}
+
+{% block js %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+{% endblock js %}

@@ -1,0 +1,108 @@
+{% extends 'main_admin/base.html' %} 
+{% load static %} 
+
+{% block css %}
+<style>
+  .ulpoadcsvform {
+      width: 60%;
+      margin: auto;
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+    h3 {
+      padding-top: 2vmax;
+      padding-bottom: 1vmax;
+    }
+  
+    .form-control {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  
+    .form-label {
+      margin-left: 55px;
+    }
+  
+    .form-check {
+      margin-left: 55px;
+    }
+  
+    .btn {
+      margin-left: 55px;
+      margin-bottom: 2vmax;
+      padding-left: 2vmax;
+      padding-right: 2vmax;
+    }
+    form{
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    }
+</style>
+{% endblock css %} 
+
+{% block secondnavbar %}
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">
+          {% block page_title %} Spin Wheel: Upload CSV File{% endblock page_title %}
+        </h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="http://127.0.0.1:8000/adminpanel/">Home</a></li>
+          <li class="breadcrumb-item active">{{ page_title }}</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          {% if messages %} 
+          {% for message in messages %} 
+          {% if message.tags == 'success' %}
+          <div class="alert alert-success">{{message}}</div>
+          {% else %}
+          <div class="alert alert-danger">{{message}}</div>
+          {% endif %} 
+          {% endfor %} 
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock secondnavbar %} 
+
+{% block bodycontent %} 
+<div class="ulpoadcsvform">
+  <form method="POST" action="/upload_csv/" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h3><label for="csv_file" class="form-label">Upload CSV File</label></h3>
+    <div class="mb-3">
+        <label for="csv_file" class="form-label">Upload CSV File:</label>
+        <input type="file" class="form-control" id="csv_file" placeholder="Upload CSV File." name="csv_file" accept=".csv" required>
+    </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</div>
+
+{% endblock bodycontent %}
+
+{% block js %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+{% endblock js %}
+

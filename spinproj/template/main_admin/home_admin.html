@@ -1,0 +1,248 @@
+{% extends 'main_admin/base.html' %} 
+{% load static %} 
+
+{% block secondnavbar %}
+
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">
+          {% block page_title %} Spin Wheel:  {{page_title }}{% endblock page_title %}
+        </h1>
+      </div>
+     
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">{{ page_title }}</li>
+        </ol>
+      </div>
+      
+    </div>
+   
+  </div>
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          {% if messages %} 
+          {% for message in messages %} 
+          {% if message.tags == 'success' %}
+          <div class="alert alert-success">{{message}}</div>
+          {% else %}
+          <div class="alert alert-danger">{{message}}</div>
+          {% endif %} 
+          {% endfor %} 
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock secondnavbar %} 
+
+{% block bodycontent %}
+<section class="content">
+  <div class="container-fluid">
+    <!-- / 1st row -->
+    <div class="row">
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h3>{{total_user}}</h3>
+            <p>Total Users</p>
+          </div>
+          <div class="icon">
+            <i class="nav-icon fas fa-user-graduate"></i>
+          </div>
+          <a href="" class="small-box-footer"
+            >More info <i class="fas fa-arrow-circle-right"></i
+          ></a>
+        </div>
+      </div>
+      
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3>{{total_AssignedHouse}}</h3>
+
+            <p>Total Assigned House</p>
+          </div>
+          <div class="icon">
+            <i class="nav-icon fas fa-users"></i>
+          </div>
+          <a href="" class="small-box-footer"
+            >More info <i class="fas fa-arrow-circle-right"></i
+          ></a>
+        </div>
+      </div>
+      
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-purple">
+          <div class="inner">
+            <h3>{{total_house}}</h3>
+
+            <p>Total Houses</p>
+          </div>
+          <div class="icon">
+            <i class="nav-icon fas fa-th-list"></i>
+          </div>
+          <a href="" class="small-box-footer"
+            >More info <i class="fas fa-arrow-circle-right"></i
+          ></a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 2nd row -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card card-dark">
+          <div class="card-header">
+            <h3 class="card-title">Users - Assigned Houses Overview</h3>
+
+            <div class="card-tools">
+              <button
+                type="button"
+                class="btn btn-tool"
+                data-card-widget="collapse"
+              >
+                <i class="fas fa-minus"></i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-tool"
+                data-card-widget="remove"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart">
+              <canvas
+                id="pieChart"
+                style="
+                  min-height: 250px;
+                  height: 250px;
+                  max-height: 250px;
+                  max-width: 100%;
+                "
+              ></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card card-dark">
+          <div class="card-header">
+            <h3 class="card-title">Houses vs Assigned Houses</h3>
+
+            <div class="card-tools">
+              <button
+                type="button"
+                class="btn btn-tool"
+                data-card-widget="collapse"
+              >
+                <i class="fas fa-minus"></i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-tool"
+                data-card-widget="remove"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart">
+              <canvas
+                id="barChart"
+                style="
+                  min-height: 250px;
+                  height: 250px;
+                  max-height: 250px;
+                  max-width: 100%;
+                "
+              ></canvas>
+            </div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</section> 
+{% endblock bodycontent %} 
+
+{% block js %}
+<script>
+  $(document).ready(function ()
+  {
+    var donutData =
+    {
+      labels: ['Assigned House', 'User'],
+      datasets:
+      [
+        {
+          data: [{{ total_AssignedHouse }}, {{ total_user }}],
+          backgroundColor: ['#00a65a', '#f39c12',],
+        }
+      ]
+    }
+
+    var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+    var pieData = donutData;
+    var pieOptions =
+    {
+        maintainAspectRatio: false,
+        responsive: true,
+    }
+
+    var pieChart = new Chart(pieChartCanvas,
+    {
+        type: 'pie',
+        data: pieData,
+        options: pieOptions
+    });
+
+    
+    var donutData =
+    {
+      labels: ['House', 'Assigned House'],
+      datasets:
+      [
+        {
+          data: [{{ total_house }}, {{ total_AssignedHouse }}],
+          backgroundColor: ['#1abc9c', '#2ecc71',],
+        }
+      ]
+    }
+
+    var pieChartCanvas = $('#barChart').get(0).getContext('2d')
+    var pieData = donutData;
+    var pieOptions =
+    {
+        maintainAspectRatio: false,
+        responsive: true,
+    }
+
+    var pieChart = new Chart(pieChartCanvas,
+    {
+        type: 'pie',
+        data: pieData,
+        options: pieOptions
+    });
+
+
+  })
+</script> 
+{% endblock js %}

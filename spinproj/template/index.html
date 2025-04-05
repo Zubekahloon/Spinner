@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin Wheel App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #020202, #040404);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .main-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 1300px;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        
+        .spinner-box {
+            flex: 0 0 70%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        
+        .spinner-inner {
+            width: 400px;
+            height: 400px;
+            position: relative;
+        }
+
+        
+        canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: block;
+        }
+
+        #spin-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 80px;
+            width: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 0;
+            background: radial-gradient(#000000 50%, #d88a40 85%);
+            color: #c66e16;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+      
+        .side-box {
+            flex: 0 0 23%;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 15px;
+            max-height: 420px;
+            overflow-y: auto;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .side-box h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .side-box p {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #007BFF;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+        }
+
+    
+        .csv-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .csv-actions a,
+        .csv-actions button {
+            width: 200px;
+            text-align: center;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .csv-actions a {
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+        }
+
+        .csv-actions button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+        }
+
+        .csv-actions a:hover{
+            background-color: #218838;
+            /* for download */
+        }
+        .csv-actions button:hover {
+            background-color: #c82333;
+            /* for clear */
+        }
+
+        
+        #final-value {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .result-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            width: 550px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            display: none;
+            z-index: 1000;
+            padding: 0px;
+            pointer-events: auto;
+        }
+
+        .result-header {
+            background: #007BFF;
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .result-body {
+            color: #000000;
+            padding: 0px 17px 17px 17px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-body>p {
+            justify-content: center;
+            align-items: center;
+        }
+
+        .close-btn {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100px;
+            align-self: flex-end;
+        }
+
+        
+        @media (max-width: 768px) {
+            .main-wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .spinner-box,
+            .side-box {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .spinner-inner {
+                width: 300px;
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 style="color: white; margin-bottom: 20px;">🎡 Spin The Wheel 🎡</h1>
+
+    <div class="main-wrapper">
+       
+        <div class="spinner-box">
+            <div class="spinner-inner">
+                <canvas id="wheel"></canvas>
+                <button id="spin-btn">Spin</button>
+            </div>
+        </div>
+
+        
+        <div class="side-box">
+            <h3>🏆 Assigned Houses</h3>
+            <div class="csv-actions">
+                <a href="{% url 'download_assigned_csv' %}" class="btn btn-success">⬇️ Download CSV</a>
+
+                <form action="{% url 'clear_assigned_csv' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">🧹 Clear CSV</button>
+                </form>
+            </div>
+            <div id="winner-list"></div>
+        </div>
+    </div>
+
+    
+    <div id="final-value">
+        <div class="result-box" id="result-box">
+            <div class="result-header">🎉 Congratulations, You Are Winner! 🎉</div>
+            <div class="result-body">
+                <p id="winner-info">Waiting for result...</p>
+                <button class="close-btn" onclick="closeResult()">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        let houseNumbers = [];
+        const spinBtn = document.getElementById("spin-btn");
+        const canvas = document.getElementById("wheel");
+        const ctx = canvas.getContext("2d");
+        const resultBox = document.getElementById("result-box");
+        const winnerInfo = document.getElementById("winner-info");
+        const winnerList = document.getElementById("winner-list");
+
+        const houseCsvFile = "house_csv_file.csv";
+
+        canvas.width = 400;
+        canvas.height = 400;
+
+        const colors = [
+            "#ff0000", "#ffa500", "#008000", "#2e557e", "#e74c3c", "#f1c40f",
+            "#2ecc71", "#3498db", "#9b59b6", "#e67e22", "#1abc9c", "#34495e",
+            "#ffff00", "#0000ff", "#4b0082", "#ee82ee", "#ff1493", "#00ffff", "#6a5acd"
+        ];
+
+        async function loadHouseNumbers() {
+            try {
+                const response = await fetch(`/media/upload_houses_no/${houseCsvFile}?t=${new Date().getTime()}`);
+                const text = await response.text();
+                houseNumbers = text.split("\n").map(num => num.trim()).filter(num => num);
+                drawWheel();
+            } catch (error) {
+                console.error("Error loading house numbers:", error);
+            }
+        }
+
+        function drawWheel() {
+            if (houseNumbers.length === 0) return;
+            const slices = houseNumbers.length;
+            const sliceAngle = (2 * Math.PI) / slices;
+            const radius = canvas.width / 2;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < slices; i++) {
+                ctx.beginPath();
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius, i * sliceAngle, (i + 1) * sliceAngle);
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.rotate(i * sliceAngle + sliceAngle / 2);
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 16px Arial";
+                ctx.textAlign = "right";
+                ctx.fillText(houseNumbers[i], radius - 20, 10);
+                ctx.restore();
+            }
+        }
+
+        let assignedHouses = new Set();
+
+        function removeHouseNumber(assignedHouse) {
+            houseNumbers = houseNumbers.filter(num => num !== assignedHouse);
+            drawWheel();
+        }
+
+        function spinWheel() {
+            if (houseNumbers.length === 0) {
+                alert("No More House Found!");
+                return;
+            }
+
+            let randomIndex = Math.floor(Math.random() * houseNumbers.length);
+            let randomHouse = houseNumbers[randomIndex];
+
+            if (assignedHouses.has(randomHouse)) {
+                alert(`❌ House No ${randomHouse} is already assigned! ❌`);
+                return;
+            }
+
+            let degrees = 360 * 5 + randomIndex * (360 / houseNumbers.length);
+            canvas.style.transition = "none";
+            canvas.style.transform = "rotate(0deg)";
+
+            setTimeout(() => {
+                canvas.style.transition = "transform 5s ease-out";
+                canvas.style.transform = `rotate(${degrees}deg)`;
+            }, 100);
+
+            spinBtn.disabled = true;
+
+            setTimeout(() => {
+                fetch(`/assign-house-to-user/${houseCsvFile}/${randomHouse}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            assignedHouses.add(randomHouse);
+
+
+                            winnerInfo.innerHTML = `
+                                🏠 Plot No: <strong>${data.house_number}</strong><br>
+                                👤 Name: ${data.user_name}<br>
+                                📍 Territory: ${data.territory}
+                            `;
+                            resultBox.style.display = "block";
+
+
+                            const newEntry = document.createElement("p");
+                            newEntry.innerHTML = `
+                                🏠 <strong>${data.house_number}</strong><br>
+                                👤 ${data.user_name}<br>
+                                📍 ${data.territory}
+                            `;
+                            winnerList.prepend(newEntry);
+
+
+                            removeHouseNumber(data.house_number);
+                            setTimeout(() => {
+                                loadHouseNumbers();
+                            }, 2000);
+                        } else {
+                            alert(`❌ ${data.message} ❌`);
+                        }
+                    })
+                    .catch(() => {
+                        alert("NO More House Found!");
+                    })
+                    .finally(() => {
+                        spinBtn.disabled = false;
+                    });
+
+            }, 5000);
+        }
+
+        function closeResult() {
+            resultBox.style.display = "none";
+        }
+
+        spinBtn.addEventListener("click", spinWheel);
+        loadHouseNumbers();
+    </script>
+</body>
+
+</html>
