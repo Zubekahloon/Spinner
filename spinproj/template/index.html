@@ -227,7 +227,7 @@
 
         
         <div class="side-box">
-            <h3>🏆 Assigned Houses</h3>
+            <h3>🏆 Assigned Plots</h3>
             <div class="csv-actions">
                 <a href="{% url 'download_assigned_csv' %}" class="btn btn-success">⬇️ Download CSV</a>
 
@@ -280,7 +280,7 @@
                 houseNumbers = text.split("\n").map(num => num.trim()).filter(num => num);
                 drawWheel();
             } catch (error) {
-                console.error("Error loading house numbers:", error);
+                console.error("Error loading Plot numbers:", error);
             }
         }
 
@@ -319,7 +319,7 @@
 
         function spinWheel() {
             if (houseNumbers.length === 0) {
-                alert("No More House Found!");
+                alert("No More Plot Found!");
                 return;
             }
 
@@ -327,7 +327,7 @@
             let randomHouse = houseNumbers[randomIndex];
 
             if (assignedHouses.has(randomHouse)) {
-                alert(`❌ House No ${randomHouse} is already assigned! ❌`);
+                alert(`❌ Plot No ${randomHouse} is assigned! ❌`);
                 return;
             }
 
@@ -376,7 +376,7 @@
                         }
                     })
                     .catch(() => {
-                        alert("NO More House Found!");
+                        alert("NO More Plot Found!");
                     })
                     .finally(() => {
                         spinBtn.disabled = false;

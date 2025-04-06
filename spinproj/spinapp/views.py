@@ -85,7 +85,7 @@ def assign_house_to_user(request, house_csv_file, house_number):
 
         assigned_house = AssignedHouse.objects.filter(house_number=house_number).select_related('user').first()
         if not assigned_house:
-            return JsonResponse({"success": False, "message": "House Not Found!"}, status=400)
+            return JsonResponse({"success": False, "message": "Plot Not Found!"}, status=400)
 
         user = assigned_house.user  
 
@@ -94,7 +94,7 @@ def assign_house_to_user(request, house_csv_file, house_number):
                 reader = csv.reader(file)
                 for row in reader:
                     if str(house_number) in row:
-                        return JsonResponse({"success": False, "message": f"House No {house_number} is already recorded!"}, status=400)
+                        return JsonResponse({"success": False, "message": f"Plot No {house_number} is already recorded!"}, status=400)
 
 
         os.makedirs(os.path.dirname(assigned_houses_path), exist_ok=True)
@@ -138,7 +138,7 @@ def assign_house(request):
             user = User.objects.get(id=user_id)
         
             if AssignedHouse.objects.filter(house_number=house_number).exists():
-                error = f"House No {house_number} is already assigned!"
+                error = f"Plot No {house_number} is already assigned!"
             else:
                 AssignedHouse.objects.create(user=user, house_number=house_number)
                 return redirect("assign_house") 
@@ -185,12 +185,12 @@ def do_updateassignhouse(request, id):
         if user_id and house_number:
            
             if AssignedHouse.objects.filter(house_number=house_number).exclude(id=id).exists():
-                messages.error(request, f"House No {house_number} is already assigned to another user!")
+                messages.error(request, f"Plot {house_number} is already assigned to another user!")
             else:
                 assigned_house.user = User.objects.get(id=user_id)
                 assigned_house.house_number = house_number
                 assigned_house.save()
-                messages.success(request, "House updated successfully!")
+                messages.success(request, "Plot updated successfully!")
                 return redirect('assign_house_display')
 
     return redirect('assign_house_display')
@@ -218,7 +218,6 @@ def clear_assigned_csv(request):
             writer = csv.writer(file)
             writer.writerow(['Name', 'Territory', 'Plot Number'])
         
-        # return HttpResponse("Assigned file cleared successfully.")
         return redirect('index')
     
     return HttpResponse("File not found.", status=404)
@@ -287,7 +286,7 @@ def upload_csv(request):
                 house_number = row[3].strip()
 
                 if AssignedHouse.objects.filter(house_number=house_number).exists():
-                    print(f"❌ House {house_number} already assigned. Skipping...")
+                    print(f"❌ Plot {house_number} assigning. Skipping...")
                     continue
 
                 user, _ = User.objects.get_or_create(
@@ -296,7 +295,7 @@ def upload_csv(request):
                 )
 
                 AssignedHouse.objects.create(user=user, house_number=house_number)
-                print(f"✅ Assigned House {house_number} to {name}")
+                print(f"✅ Assigned Plot {house_number} to {name}")
 
         return redirect("upload_csv")  
 
@@ -337,7 +336,7 @@ def delete_uploaded_csv_file(request, filename):
             house_numbers_to_delete.append(house_number)
 
         AssignedHouse.objects.filter(house_number__in=house_numbers_to_delete).delete()
-        print(f"✅ Deleted AssignedHouse records for houses: {house_numbers_to_delete}")
+        print(f"✅ Deleted AssignedPlot records for Plots: {house_numbers_to_delete}")
 
     fs.delete(filename)
     print(f"🗑️ Deleted uploaded file: {file_path}")
@@ -407,7 +406,7 @@ def delete_houses_csv(request, filename):
 
         House.objects.all().delete()
 
-        message = f"File '{filename}' deleted successfully, and all house records removed from the database."
+        message = f"File '{filename}' deleted successfully, and all plot records removed from the database."
     else:
         message = f"File '{filename}' not found."
 

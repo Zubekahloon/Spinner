@@ -5,7 +5,7 @@ import os
 from django.conf import settings
 
 class Command(BaseCommand):
-    help = "Load users and house numbers from a CSV file"
+    help = "Load users and Plot numbers from a CSV file"
 
     def handle(self, *args, **kwargs):
         file_path = os.path.join(settings.MEDIA_ROOT, "data/house_user_list.csv")  
@@ -20,7 +20,7 @@ class Command(BaseCommand):
 
                     
                     if AssignedHouse.objects.filter(house_number=house_number).exists():
-                        self.stdout.write(self.style.WARNING(f"House {house_number} is already assigned! Skipping..."))
+                        self.stdout.write(self.style.WARNING(f"Plot {house_number} is assigning! Skipping..."))
                         continue  
 
                    
@@ -28,7 +28,7 @@ class Command(BaseCommand):
 
                    
                     AssignedHouse.objects.create(user=user, house_number=house_number)
-                    self.stdout.write(self.style.SUCCESS(f"Assigned House {house_number} to {email}"))
+                    self.stdout.write(self.style.SUCCESS(f"Assigned Plot {house_number} to {email}"))
 
         except FileNotFoundError:
             self.stdout.write(self.style.ERROR("CSV file not found!"))
