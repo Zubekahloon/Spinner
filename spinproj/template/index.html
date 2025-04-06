@@ -25,7 +25,7 @@
             padding: 0 20px;
         }
 
-        
+
         .spinner-box {
             flex: 0 0 70%;
             display: flex;
@@ -33,14 +33,14 @@
             align-items: center;
         }
 
-        
+
         .spinner-inner {
             width: 400px;
             height: 400px;
             position: relative;
         }
 
-        
+
         canvas {
             width: 100%;
             height: 100%;
@@ -64,7 +64,7 @@
             font-weight: 600;
         }
 
-      
+
         .side-box {
             flex: 0 0 23%;
             background-color: #ffffff;
@@ -91,7 +91,7 @@
             color: #333;
         }
 
-    
+
         .csv-actions {
             display: flex;
             flex-direction: column;
@@ -123,16 +123,17 @@
             border: none;
         }
 
-        .csv-actions a:hover{
+        .csv-actions a:hover {
             background-color: #218838;
             /* for download */
         }
+
         .csv-actions button:hover {
             background-color: #c82333;
             /* for clear */
         }
 
-        
+
         #final-value {
             position: absolute;
             top: 0;
@@ -191,7 +192,240 @@
             align-self: flex-end;
         }
 
-        
+
+        /* Media Queries for resizing */
+        @media (min-width: 1410px) and (max-width: 1600px) {
+            .spinner-box {
+                flex-basis: 48%;
+            }
+
+            .spinner-inner {
+                width: 500px;
+                height: 500px;
+            }
+
+            .side-box {
+                flex-basis: 30%;
+                padding: 20px;
+                max-height: 440px;
+            }
+
+            #winner-list>p {
+                font-size: 17px;
+            }
+
+            .csv-actions a,
+            .csv-actions button {
+                font-size: 22px;
+                width: 250px;
+            }
+
+            .side-box h3 {
+                font-size: 1.8em
+            }
+
+            #spin-btn {
+                height: 90px;
+                width: 90px;
+                font-size: 1.6em;
+            }
+
+            .result-box {
+                width: 500px;
+            }
+
+            .result-header {
+                font-size: 22px;
+            }
+
+            #winner-info {
+                font-size: 20px;
+            }
+
+            .close-btn {
+                font-size: 18px;
+            }
+            h1{
+                font-size: 2.3em;
+            }
+
+        }
+
+        @media (min-width: 1600px) and (max-width: 2000px) {
+            .spinner-box {
+                flex-basis: 43%;
+            }
+
+            .spinner-inner {
+                width: 600px;
+                height: 600px;
+            }
+
+            .side-box {
+                flex-basis: 33%;
+                padding: 25px;
+                max-height: 460px;
+            }
+
+            #winner-list>p {
+                font-size: 21px;
+            }
+
+            .csv-actions a,
+            .csv-actions button {
+                font-size: 25px;
+                width: 300px;
+            }
+
+            .side-box h3 {
+                font-size: 2em
+            }
+
+            #spin-btn {
+                height: 100px;
+                width: 100px;
+                font-size: 1.7em;
+            }
+
+            .result-box {
+                width: 600px;
+            }
+
+            .result-header {
+                font-size: 24px;
+            }
+
+            #winner-info {
+                font-size: 22px;
+            }
+
+            .close-btn {
+                font-size: 19px;
+            }
+            h1{
+                font-size: 2.6em;
+            }
+        }
+
+        @media (min-width: 2000px) and (max-width: 2500px) {
+            .spinner-box {
+                flex-basis: 40%;
+            }
+
+            .spinner-inner {
+                width: 700px;
+                height: 700px;
+            }
+
+            .side-box {
+                flex-basis: 33%;
+                padding: 35px;
+                max-height: 490px;
+            }
+
+            #winner-list>p {
+                font-size: 25px;
+            }
+
+            .csv-actions a,
+            .csv-actions button {
+                font-size: 28px;
+                width: 300px;
+            }
+
+            .side-box h3 {
+                font-size: 2.5em
+            }
+
+            #spin-btn {
+                height: 115px;
+                width: 115px;
+                font-size: 1.8em;
+            }
+
+            .result-box {
+                width: 650px;
+            }
+
+            .result-header {
+                font-size: 26px;
+            }
+
+            #winner-info {
+                font-size: 24px;
+            }
+
+            .close-btn {
+                font-size: 20px;
+            }
+            h1{
+                font-size: 2.8em;
+            }
+        }
+
+        @media (min-width: 2500px) and (max-width: 3000px) {
+            .spinner-box {
+                flex-basis: 35%;
+            }
+
+            .spinner-inner {
+                width: 800px;
+                height: 800px;
+            }
+
+            .side-box {
+                flex-basis: 37%;
+                padding: 40px;
+                max-height: 700px;
+            }
+
+            #winner-list>p {
+                font-size: 28px;
+            }
+
+            .csv-actions a,
+            .csv-actions button {
+                font-size: 32px;
+                width: 300px;
+            }
+
+            .side-box h3 {
+                font-size: 2.6em
+            }
+
+            #spin-btn {
+                height: 80px;
+                width: 80px;
+                font-size: 1.5em;
+            }
+
+            #spin-btn {
+                height: 130px;
+                width: 130px;
+                font-size: 1.9em;
+            }
+
+            .result-box {
+                width: 700px;
+            }
+
+            .result-header {
+                font-size: 30px;
+            }
+
+            #winner-info {
+                font-size: 30px;
+            }
+
+            .close-btn {
+                font-size: 24px;
+            }
+            h1{
+                font-size: 3em;
+            }
+
+        }
+
         @media (max-width: 768px) {
             .main-wrapper {
                 flex-direction: column;
@@ -217,7 +451,7 @@
     <h1 style="color: white; margin-bottom: 20px;">🎡 Spin The Wheel 🎡</h1>
 
     <div class="main-wrapper">
-       
+
         <div class="spinner-box">
             <div class="spinner-inner">
                 <canvas id="wheel"></canvas>
@@ -225,7 +459,7 @@
             </div>
         </div>
 
-        
+
         <div class="side-box">
             <h3>🏆 Assigned Plots</h3>
             <div class="csv-actions">
@@ -240,7 +474,7 @@
         </div>
     </div>
 
-    
+
     <div id="final-value">
         <div class="result-box" id="result-box">
             <div class="result-header">🎉 Congratulations, You Are Winner! 🎉</div>
