@@ -466,6 +466,8 @@
         <div class="side-box">
             <h3>🏆 Assigned Plots</h3>
             <div class="csv-actions">
+                <a href="{% url 'participated' %}" class="btn btn-primary"> Participated </a>
+
                 <a href="{% url 'download_assigned_csv' %}" class="btn btn-success">⬇️ Download CSV</a>
 
                 <form action="{% url 'clear_assigned_csv' %}" method="post" style="display:inline;">

@@ -37,5 +37,8 @@ urlpatterns = [
     path("display_houses_csv_files/", views.display_houses_csv_files, name="display_houses_csv_files"),
     path("delete_houses_csv/<str:filename>/", views.delete_houses_csv, name="delete_houses_csv"),
 
+
+    path('participated/', views.participated, name='participated'),
+
 ]
 

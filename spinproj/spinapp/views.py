@@ -414,3 +414,8 @@ def delete_houses_csv(request, filename):
     return redirect("display_houses_csv_files")
 
 
+
+
+def participated(request):
+    participaant = AssignedHouse.objects.select_related("user").all() 
+    return render(request, "participant.html", {"participaant": participaant})
